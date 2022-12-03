@@ -67,11 +67,11 @@ class Subject:
             searched_result = searchresult(button_value,listbox_value)
             # final_searched_result = [x for xs in searched_result for x in xs.split(',')]
             # Add values to tree view
-            print(searched_result)
+            # print(searched_result)
             for value in searched_result:
                 # index =0
                 #value.split(',')
-                self.table.insert(parent='', index='end', iid=0, values=(value.split(',')[0],value.split(',')[1], value.split(',')[2]))
+                self.table.insert(parent='', index='end', text= '', values=(value.split(',')[0],value.split(',')[1].replace(' ', ', '), value.split(',')[2])) # Add how to update value after each selection
 
         # Creating listbox for Left frame
         self.list = getSubjectNames()

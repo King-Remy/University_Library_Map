@@ -41,9 +41,9 @@ class Classmark:
 
         # Create second frame inside the canvas
         self.second_frame =Frame(self.canvas)
-
+        
         # Add second frame into a window of the canvas
-        self.canvas.create_window((0,0), window=self.second_frame, anchor="nw")
+        # self.canvas.create_window((0,0), window=self.second_frame, anchor="nw")
         
         # Creating tree view
         self.table=ttk.Treeview(self.second_frame,columns=("Subject Name","Classmark","Location"),show='headings')
@@ -63,15 +63,22 @@ class Classmark:
         def select(e):
             listbox_value= self.listbox.get(ANCHOR)
             button_value = self.buttonClassmark.cget('text')
+
+            for row in self.table.get_children():
+                self.table.delete(row)
+            
+            self.frameview.pack(fill=X)
+            self.canvas.create_window((0,0), window=self.second_frame, anchor="nw")
+
             searched_result = searchresult(button_value,listbox_value)
             # final_searched_result = [x for xs in searched_result for x in xs.split(',')]
             # Add values to tree view
             # print(searched_result)
+    
             for value in searched_result:
-                index =0
                 #value.split(',')
-                self.table.insert(parent='', index='end', iid=index, values=(value.split(',')[0],value.split(',')[1], value.split(',')[2]))
-                index = index+1
+                self.table.insert(parent='', index='end', text='', values=(value.split(',')[0],value.split(',')[1].replace(' ', ', '), value.split(',')[2]))
+                
 
         # Creating listbox for Left frame
         self.list = getClassMarks()
@@ -85,4 +92,5 @@ class Classmark:
 
         # Adding top frame for right frame view
         self.frameview=Frame(self.second_frame,bg='blue', height=400,width=1000)
-        self.frameview.pack(fill=X)
+        # self.frameview.pack(fill=X)
+        self.frameview.grid_remove() # to ensure no frame is displayed before treeview table is selected and opened

@@ -15,10 +15,17 @@ def finalTable():
     for subject_classmark, classmark_location in zip(csv_handler1,csv_handler2):
         subject, classmark = subject_classmark
         loc_classmark1, location = classmark_location
-        new_data_dict.append({subject: subject_classmark['Subject'], loc_classmark1: classmark_location['Classmark'], location: classmark_location['Location']})
+        new_data_dict.append({subject: subject_classmark[f"{subject}"], classmark: classmark_location[f"{loc_classmark1}"], location: classmark_location[f"{location}"]})
+        
     return new_data_dict
 
-# print(finalTable())
+def checktable(table):
+    keys = list(table[0].keys())
+
+    return keys
+
+print(checktable(finalTable()))
+
 
 def main():
     menuInput()
@@ -86,17 +93,17 @@ def menuInput():
 def searchresult(param, search):
     Results = []
     for value in finalTable():
-        if param == "Subject Name":
-            if search in value['Subject']:
-                # print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+        if param == "Subject Name" or param == 1:
+            if search.upper() in value['Subject'].upper():
+                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
-        elif param == "Classmark":
-            if search in value['Classmark']:
-                # print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+        elif param == "Classmark"  or param == 2:
+            if search.upper() in value['Classmark'].upper():
+                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
-        elif param == "Location":
-            if search in value['Location']:
-                # print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+        elif param == "Location"  or param == 3:
+            if search.upper() in value['Location'].upper():
+                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
     return Results
 
@@ -137,8 +144,8 @@ def getLocations():
 # print(getLocations())
 if __name__ == '__main__':
     main()
-    for value in searchresult(userChoice, userInput):
-        print(value)
+    searchresult(userChoice, userInput)
+        # print(value)
 
 # TO DO:
 # 1. Using regex, make the user have option of inputing the first letter with capital or small letter for subject name, class mark or location 
