@@ -1,8 +1,5 @@
 from csv import DictReader
 
-
-
-
 def finalTable():
     new_data_dict = []
 
@@ -18,52 +15,55 @@ def finalTable():
         new_data_dict.append({subject: subject_classmark[f"{subject}"], classmark: classmark_location[f"{loc_classmark1}"], location: classmark_location[f"{location}"]})
         
     return new_data_dict
+# print(finalTable())
 
-def checktable(table):
+def getAllKeys(table):
     keys = list(table[0].keys())
 
+    # locations = list(set(table )
     return keys
 
-print(checktable(finalTable()))
+def getAllLocations(table):
+    keys = set()
+    for locs in table:
+        keys.add(locs['Location'])
+    return list(keys)
 
+print(getAllLocations(finalTable()))
+
+
+def printKeyOptions(opt):
+    index = 0
+    select =''
+    for option in opt:
+        select += f'{index+1}. {option}\n'
+        index = index +1
+    print(select)
+
+def printLocationOptions(loc):
+    index = 0
+    select = ''
+    for location in loc:
+        select +=f'{index+1}. {location}\n'
+        index = index +1
+    print(select)
+
+def getselectedlocation(index):
+    return getAllLocations(finalTable())[index-1]
+
+#print(getselectedlocation(1))
 
 def main():
     menuInput()
 
-def menu():
-    menuDisplay = print('''
-    Welcome! Please make a choice from the following menu:
-    1. Subject Name
-    2. Classmark
-    3. Location
-''')
-
-def menu2():
-    menuDisplay = print('''
-    Welcome! Please make a choice from the following menu:
-    1. Top Floor Back Left
-    2. Top Floor Back Right
-    3. Top Floor Front Left
-    4. Top Floor Front Right
-    5. Middle Floor
-    3. Ground Floor
-''')
-
-def menu3():
-    menuDisplay = print('''
-    Please select Back to try again:
-    1. Back    
-''')
-
 def menuInput():
-    global userChoice, userInput
     
     while True:
-        menu()
+        printKeyOptions(getAllKeys(finalTable()))       
         try:
             userChoice = int(input("Please make a selection: "))
-            if not 1 <= userChoice <=3:
-                menu3()
+            if userChoice not in range(1,len(getAllKeys())):
+                print('invalid selection, try again')
                 userChoice = int(input("Please enter: "))
         except:
             pass
@@ -71,40 +71,41 @@ def menuInput():
         
         if userChoice == 1:
             userInput = input("Please enter a Subject Name: ")
-            return userInput
+           # return userInput
+            for value in searchresult(userChoice, userInput):
+                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+
         elif userChoice == 2:
             userInput = input("Please enter a Classmark: ")
-            return userInput
+           # return userInput
+            for value in searchresult(userChoice, userInput):
+                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+
         elif userChoice == 3:
-            menu2()
+            printLocationOptions(getAllLocations(finalTable()))
             userInput = input("Please make a selection: ")
-            return userInput
-        # elif len(userInput) == 0:
-        #     menu3()
-        #     input("Please enter: ")
-        #     userChoice = input("Please enter a valid input: ")
-        # else:
-        #     error = ''
-        #     if len(userInput) == 0:
-        #         error = "Error: no data was typed yet"
-        #     print(error)
-        #     menu3()
+           # return userInput
+            location = getselectedlocation(int(userInput))
+            for value in searchresult(userChoice, location):
+                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+
+
 
 def searchresult(param, search):
     Results = []
     for value in finalTable():
         if param == "Subject Name" or param == 1:
             if search.upper() in value['Subject'].upper():
-                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+                #print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
         elif param == "Classmark"  or param == 2:
             if search.upper() in value['Classmark'].upper():
-                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+               # print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
         elif param == "Location"  or param == 3:
             if search.upper() in value['Location'].upper():
-                print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
-                Results.append('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+                #print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
+                Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
     return Results
 
 
@@ -137,17 +138,11 @@ def getLocations():
     
     return location
 
-# print(getClassMarks())
-# print(getSubjectNames())
-# print(new_data_dict)
-
-# print(getLocations())
 if __name__ == '__main__':
     main()
-    searchresult(userChoice, userInput)
-        # print(value)
 
 # TO DO:
-# 1. Using regex, make the user have option of inputing the first letter with capital or small letter for subject name, class mark or location 
-# 2. Add option to select again if no response is given after being prompt to enter subject name, classmark or location
-# 3. Make code more modular. Use more defined functions to ensure code is decoupled.
+# 1. add funciton to check if csv is the right one
+# 2. complete error handling in menuinput() function
+# 2. Change the 'Subject Name', 'Classmark' and 'Location' strings to the getAllKeys indexes. Ensure the text aligns with tkinter
+# 4. update tkinter and add teh same error handling there.
