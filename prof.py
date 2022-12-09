@@ -29,7 +29,7 @@ def getAllLocations(table):
         keys.add(locs['Location'])
     return list(keys)
 
-print(getAllLocations(finalTable()))
+# print(getAllLocations(finalTable()))
 
 
 def printKeyOptions(opt):

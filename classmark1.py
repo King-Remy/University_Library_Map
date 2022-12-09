@@ -74,7 +74,6 @@ class Classmark:
             # final_searched_result = [x for xs in searched_result for x in xs.split(',')]
             # Add values to tree view
             # print(searched_result)
-    
             for value in searched_result:
                 #value.split(',')
                 self.table.insert(parent='', index='end', text='', values=(value.split(',')[0],value.split(',')[1].replace(' ', ', '), value.split(',')[2]))
