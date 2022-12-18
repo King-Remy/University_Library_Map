@@ -1,46 +1,69 @@
+'''
+FIlename: 
+AUthor: King Remy Igbokwe
+Student ID: 21027699
+Date: 17/12/2022
+
+Keele University Library program that stores the following information:
+Subject, Classmark, Location
+
+User can search any subject, classmark or location in the Library
+'''
+
 from csv import DictReader
 
-def finalTable():
-    new_data_dict = []
+def finalTable():           # Method for returning a list containing a dictionary containing Subject Name, Classmark, Location
+    try:
+        new_data_dict = []
 
-    file_handler1 = open("Subject_classmark.csv", "r", encoding="utf8")
-    csv_handler1 = DictReader(file_handler1)
+        # Reading CSVs
+        file_handler1 = open("Subject_classmark.csv", "r", encoding="utf8")
+        csv_handler1 = DictReader(file_handler1)
 
-    file_handler2 = open("Location_classmark3.csv", "r", encoding="utf8")
-    csv_handler2 = DictReader(file_handler2)
+        file_handler2 = open("Location_classmark3.csv", "r", encoding="utf8")
+        csv_handler2 = DictReader(file_handler2)
 
-    for subject_classmark, classmark_location in zip(csv_handler1,csv_handler2):
-        subject, classmark = subject_classmark
-        loc_classmark1, location = classmark_location
-        new_data_dict.append({subject: subject_classmark[f"{subject}"], classmark: classmark_location[f"{loc_classmark1}"], location: classmark_location[f"{location}"]})
-        
-    return new_data_dict
+        # merging csvs and forming a nested dictionary of containing subject name, classmark and location
+        for subject_classmark, classmark_location in zip(csv_handler1,csv_handler2):
+            subject_col, classmark_col = subject_classmark
+            loc_classmark_col, loc_location_col = classmark_location
+            new_data_dict.append({subject_col: subject_classmark[f"{subject_col}"], classmark_col: classmark_location[f"{loc_classmark_col}"], loc_location_col: classmark_location[f"{loc_location_col}"]})
+            
+        return new_data_dict
+    # Ensures hte right CSVs are uploaded
+    except:
+        print("Wrong file loaded")
+        SystemExit
 # print(finalTable())
 
-def getAllKeys(table):
+def getAllKeys(table):          # Method takes in dictionary table and returns the column headers Subject, Classmark, Location and 'Exit'
     keys = list(table[0].keys())
 
-    # locations = list(set(table )
+    keys.append('Exit')
+
     return keys
 
-def getAllLocations(table):
-    keys = set()
+print(tuple(getAllKeys(finalTable())[0:3]))
+def getAllLocations(table):         # Method takes in dictionary table returns returns a list of all unique locations
+    location = set()
+
     for locs in table:
-        keys.add(locs['Location'])
-    return list(keys)
+        location.add(locs['Location'])
+    return list(location)
 
 # print(getAllLocations(finalTable()))
 
 
-def printKeyOptions(opt):
+def printKeyOptions(keys):           # Method takes in list of keys from dictionary table and prints it out in new lines
     index = 0
     select =''
-    for option in opt:
+    for option in keys:
         select += f'{index+1}. {option}\n'
         index = index +1
     print(select)
+# print(printKeyOptions(getAllKeys(finalTable())))
 
-def printLocationOptions(loc):
+def printLocationOptions(loc):             # Method takes in list of keys from dictionary table and prints it out in new lines
     index = 0
     select = ''
     for location in loc:
@@ -48,68 +71,66 @@ def printLocationOptions(loc):
         index = index +1
     print(select)
 
-def getselectedlocation(index):
+def getSelectedLocation(index):         # Method returns the selected location 
     return getAllLocations(finalTable())[index-1]
 
-#print(getselectedlocation(1))
+#print(getSelectedLocation(1))
 
-def main():
+def main():             # Method starts the Menu option
     menuInput()
 
-def menuInput():
-    
-    while True:
+def menuInput():            # Method prompts the user to select a subject name, classmark or a location
+    retry = True
+    while retry:
+        print("Please make a selection: ")
         printKeyOptions(getAllKeys(finalTable()))       
-        try:
-            userChoice = int(input("Please make a selection: "))
-            if userChoice not in range(1,len(getAllKeys())):
-                print('invalid selection, try again')
-                userChoice = int(input("Please enter: "))
-        except:
-            pass
-        
-        
+        userChoice = int(input('-> '))
+
         if userChoice == 1:
             userInput = input("Please enter a Subject Name: ")
-           # return userInput
+            # prints related classamrk and Location from selection 
             for value in searchresult(userChoice, userInput):
                 print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
 
         elif userChoice == 2:
             userInput = input("Please enter a Classmark: ")
-           # return userInput
+            # prints related subject name and Location from selection
             for value in searchresult(userChoice, userInput):
                 print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
 
         elif userChoice == 3:
             printLocationOptions(getAllLocations(finalTable()))
             userInput = input("Please make a selection: ")
-           # return userInput
-            location = getselectedlocation(int(userInput))
+            # prints related Subject name and Classmark from selection
+            location = getSelectedLocation(int(userInput))
             for value in searchresult(userChoice, location):
                 print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+        
+        elif userChoice == 4:
+            # stops the iteratioin once 4. Exit is selected
+            retry=False
+            SystemExit
+        else:
+            # If any number out of range 1 - 4 is selected, below message presented
+            print('invalid selection, please try again\n')
 
 
 
-def searchresult(param, search):
+def searchresult(param, search):            # Method takes in user's selected search parameter and related search and returns a list of searched paramters
     Results = []
     for value in finalTable():
-        if param == "Subject Name" or param == 1:
+        if param == "Subject" or param == 1:
             if search.upper() in value['Subject'].upper():
-                #print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
         elif param == "Classmark"  or param == 2:
             if search.upper() in value['Classmark'].upper():
-               # print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
         elif param == "Location"  or param == 3:
             if search.upper() in value['Location'].upper():
-                #print('Related Subject: ' + value['Subject'] + ' -----> Related Classmark: ' + value['Classmark'] + ' -----> Related Location: ' + value['Location'])
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
     return Results
 
-
-def getSubjectNames():
+def getAllSubjectNames():          # Method returns a list of all subject name
     subject_names = []
 
     for subjectRow in finalTable():
@@ -117,32 +138,21 @@ def getSubjectNames():
         subject_names.append(allSubjectName)
     return subject_names
 
-def getClassMarks():
-
+def getAllClassMarks():            # Method returns a list of all classmark
     class_marks = []
     
     for classmarkRow in finalTable():
         allClassmark = classmarkRow['Classmark']
         class_marks.append(allClassmark)
-    final_class_marks = [x for xs in class_marks for x in xs.split(',') ]
-    # for Row in class_marks:
-    #     classmarkRow = Row.split(",")
+    final_class_marks = [x for xs in class_marks for x in xs.split(',') ] # Returns 
     return final_class_marks
 
-def getLocations():
+def getLocations():         # Method returns a list of all unique locations
+    location = set()
 
-    location = []
-    for locationRow in finalTable():
-        allLocation = locationRow['Location']
-        location.append(allLocation)
-    
-    return location
+    for locs in finalTable():
+        location.add(locs['Location'])
+    return list(location)
 
-if __name__ == '__main__':
+if __name__ == '__main__':          # Prevents invoking the script when not ran
     main()
-
-# TO DO:
-# 1. add funciton to check if csv is the right one
-# 2. complete error handling in menuinput() function
-# 2. Change the 'Subject Name', 'Classmark' and 'Location' strings to the getAllKeys indexes. Ensure the text aligns with tkinter
-# 4. update tkinter and add teh same error handling there.
