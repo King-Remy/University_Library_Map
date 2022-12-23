@@ -1,7 +1,6 @@
 '''
-FIlename: 
+FIlename: 21027699
 AUthor: King Remy Igbokwe
-Student ID: 21027699
 Date: 17/12/2022
 
 Keele University Library app that displays the following stored information:
@@ -11,15 +10,16 @@ User can select any subject, classmark or location in the Library and it would d
 '''
 
 from tkinter import *
-import subject3 as s
-import classmark1 as c
-import location as l
+import SubjectClass as s
+import ClassmarkClass as c
+import LocationClass as l
 
 class Library:
     def __init__(self,window):          # Method sets the properties for the Library window 
+
         self.master = window
         self.master.title("Keele Library Map")
-        self.master.iconbitmap('Keele-logo2.ico')       # Change the window icon to Keele University logo
+        self.master.iconbitmap('Keele-logo_Icon.ico')       # Change the window icon to Keele University logo
         self.width=self.master.winfo_screenwidth()          # Gets the width of window screen
         self.height=self.master.winfo_screenheight()            # Gets the height of window screen
         self.master.geometry(f"{self.width}x{self.height}+0+0")         # Set width and heigh geometry of window
@@ -32,7 +32,7 @@ class Library:
         self.klm.pack()
 
         # Adding Keele university logo at top right of right frame
-        self.imageLogo = PhotoImage(file='Keele logo.png')
+        self.imageLogo = PhotoImage(file='Keele-logo_Frame.png')
 
         self.labelLogo = Label(self.topFrame, image=self.imageLogo)            # Label created on right frame for  keele logo iamge
         self.labelLogo.place(x=1300, y= 20)
@@ -41,11 +41,11 @@ class Library:
         self.centerFrame=Frame(self.master)
         self.centerFrame.pack(fill=BOTH)
 
-        self.image = PhotoImage(file='Library2.png')
+        # Set background for centerframe
+        self.image = PhotoImage(file='Window1Background.png')            # Load background image
 
         self.imglabel = Label(self.centerFrame, image=self.image)
         self.imglabel.pack(fill=BOTH)
-        
 
         # Creating subject logo selection and selected window
         openSubject = s.Subject(self.centerFrame)
@@ -55,11 +55,6 @@ class Library:
 
         # Creating location logo selection and selected window
         openLocation = l.Location(self.centerFrame)
-
-        # Placing each subject, classmark and location logo selection in center frame with equal spacing
-        # self.centerFrame.grid_columnconfigure(0, weight=1)
-        # self.centerFrame.grid_columnconfigure(1, weight=1)
-        # self.centerFrame.grid_columnconfigure(2, weight=1)
 
 if __name__ == '__main__':          # Prevents invoking the script when not ran
     window = Tk()

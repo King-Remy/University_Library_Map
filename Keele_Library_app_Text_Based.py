@@ -1,7 +1,6 @@
 '''
-FIlename: 
+FIlename: 21027699
 AUthor: King Remy Igbokwe
-Student ID: 21027699
 Date: 17/12/2022
 
 Keele University Library program that stores the following information:
@@ -17,10 +16,10 @@ def finalTable():           # Method for returning a list containing a dictionar
         new_data_dict = []
 
         # Reading CSVs
-        file_handler1 = open("Subject_classmark.csv", "r", encoding="utf8")
+        file_handler1 = open("Subject_Classmark.csv", "r", encoding="utf8")
         csv_handler1 = DictReader(file_handler1)
 
-        file_handler2 = open("Location_classmark3.csv", "r", encoding="utf8")
+        file_handler2 = open("Classmark_Location.csv", "r", encoding="utf8")
         csv_handler2 = DictReader(file_handler2)
 
         # merging csvs and forming a nested dictionary of containing subject name, classmark and location
@@ -34,7 +33,6 @@ def finalTable():           # Method for returning a list containing a dictionar
     except:
         print("Wrong file loaded")
         SystemExit
-# print(finalTable())
 
 def getAllKeys(table):          # Method takes in dictionary table and returns the column headers Subject, Classmark, Location and 'Exit'
     keys = list(table[0].keys())
@@ -43,16 +41,12 @@ def getAllKeys(table):          # Method takes in dictionary table and returns t
 
     return keys
 
-print(tuple(getAllKeys(finalTable())[0:3]))
 def getAllLocations(table):         # Method takes in dictionary table returns returns a list of all unique locations
     location = set()
 
     for locs in table:
         location.add(locs['Location'])
     return list(location)
-
-# print(getAllLocations(finalTable()))
-
 
 def printKeyOptions(keys):           # Method takes in list of keys from dictionary table and prints it out in new lines
     index = 0
@@ -61,7 +55,6 @@ def printKeyOptions(keys):           # Method takes in list of keys from diction
         select += f'{index+1}. {option}\n'
         index = index +1
     print(select)
-# print(printKeyOptions(getAllKeys(finalTable())))
 
 def printLocationOptions(loc):             # Method takes in list of keys from dictionary table and prints it out in new lines
     index = 0
@@ -73,8 +66,6 @@ def printLocationOptions(loc):             # Method takes in list of keys from d
 
 def getSelectedLocation(index):         # Method returns the selected location 
     return getAllLocations(finalTable())[index-1]
-
-#print(getSelectedLocation(1))
 
 def main():             # Method starts the Menu option
     menuInput()
@@ -90,13 +81,13 @@ def menuInput():            # Method prompts the user to select a subject name, 
             userInput = input("Please enter a Subject Name: ")
             # prints related classamrk and Location from selection 
             for value in searchresult(userChoice, userInput):
-                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+                print(f"\n'Subject: ' + {value.split(',')[0]} + ' || Classmark: ' + {value.split(',')[1]} + ' || Location: ' + {value.split(',')[2]}\n")
 
         elif userChoice == 2:
             userInput = input("Please enter a Classmark: ")
             # prints related subject name and Location from selection
             for value in searchresult(userChoice, userInput):
-                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+                print(f"\nSubject: {value.split(',')[0]} || Classmark: {value.split(',')[1]} || Location: {value.split(',')[2]}\n")
 
         elif userChoice == 3:
             printLocationOptions(getAllLocations(finalTable()))
@@ -104,7 +95,7 @@ def menuInput():            # Method prompts the user to select a subject name, 
             # prints related Subject name and Classmark from selection
             location = getSelectedLocation(int(userInput))
             for value in searchresult(userChoice, location):
-                print('Related Subject: ' + value.split(',')[0] + ' -----> Related Classmark: ' + value.split(',')[1] + ' -----> Related Location: ' + value.split(',')[2])
+                print(f"\n'Subject: ' + {value.split(',')[0]} + ' || Classmark: ' + {value.split(',')[1]} + ' || Location: ' + {value.split(',')[2]}\n")
         
         elif userChoice == 4:
             # stops the iteratioin once 4. Exit is selected
@@ -114,18 +105,16 @@ def menuInput():            # Method prompts the user to select a subject name, 
             # If any number out of range 1 - 4 is selected, below message presented
             print('invalid selection, please try again\n')
 
-
-
 def searchresult(param, search):            # Method takes in user's selected search parameter and related search and returns a list of searched paramters
     Results = []
     for value in finalTable():
         if param == "Subject" or param == 1:
-            if search.upper() in value['Subject'].upper():
+            if search.upper() in value['Subject'].upper():          # To accept lower case searches
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
-        elif param == "Classmark"  or param == 2:
+        elif param == "Classmark"  or param == 2:           # To accept lower case searches
             if search.upper() in value['Classmark'].upper():
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
-        elif param == "Location"  or param == 3:
+        elif param == "Location"  or param == 3:            # To accept lower case searches
             if search.upper() in value['Location'].upper():
                 Results.append(value['Subject'] +','+ value['Classmark'].replace(',', ' ') +',' + value['Location'])
     return Results
@@ -144,7 +133,7 @@ def getAllClassMarks():            # Method returns a list of all classmark
     for classmarkRow in finalTable():
         allClassmark = classmarkRow['Classmark']
         class_marks.append(allClassmark)
-    final_class_marks = [x for xs in class_marks for x in xs.split(',') ] # Returns 
+    final_class_marks = [x for xs in class_marks for x in xs.split(',') ] # splits classmarks with ','
     return final_class_marks
 
 def getLocations():         # Method returns a list of all unique locations

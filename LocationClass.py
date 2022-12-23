@@ -1,21 +1,16 @@
 from tkinter import *
 from tkinter import ttk
-from prof import *
-from gui import *
+from Keele_Library_app_Text_Based import *
+from Keele_Library_app_GUI import *
 
 class Location():
     def __init__(self, centerFrame):         # Method sets the properties of the location logo selection in center frame
 
         # Creating location image logo on center frame
-        # self.location=Frame(cf,pady=100,padx=100)
-        # self.location.place(x=1080, y= 100)
-        # Creating Location logo
-        # self.img3=PhotoImage(file='location_logo1.png')
-        # self.imgLocation=Label(self.location,image=self.img3,padx=10,pady=10)
-        # self.imgLocation.pack()
-        self.img=PhotoImage(file='location_logo1.png')
+        self.img=PhotoImage(file='location_logo.png')          # Loading location logo
         self.imgSubject=Label(centerFrame,image=self.img)
         self.imgSubject.place(x=1240, y= 100)
+
         # Button for seleciton location option
         self.buttonLocation = Button(centerFrame, command=self.openlocationwindow, text='Location', bg='#281F3E',fg='white',font=('Helvetica', 12, 'bold'),padx=10,pady=10,)
         self.buttonLocation.place(x=1265, y= 260)
@@ -24,7 +19,7 @@ class Location():
 
         self.master = Toplevel()            # Opens new location window
         self.master.title('Keele Library Map - Location')
-        self.master.iconbitmap('Keele-logo2.ico')       # Change the window icon to Keele University logo
+        self.master.iconbitmap('Keele-logo_Icon.ico')       # Change the window icon to Keele University logo
         self.width=self.master.winfo_screenwidth()      # Gets the width of window screen
         self.height=self.master.winfo_screenheight()    # Gets the height of window screen
         self.master.geometry(f"{self.width}x{self.height}+0+0")         # Set width and heigh geometry of window
@@ -39,13 +34,13 @@ class Location():
         self.frameRight.pack(fill=BOTH)
         
         # Setting backgorund image for right frame of location window
-        self.imageBackground = PhotoImage(file='Library.png')
+        self.imageBackground = PhotoImage(file='Window2Background.png')
 
         self.labelBackground = Label(self.frameRight, image=self.imageBackground)            # Label created on right frame for background iamge
         self.labelBackground.pack(fill=BOTH)
         
         # Adding Keele university logo at top right of right frame
-        self.imageLogo = PhotoImage(file='Keele logo.png')
+        self.imageLogo = PhotoImage(file='Keele-logo_Frame.png')            # Loading keele logo
 
         self.labelLogo = Label(self.frameRight, image=self.imageLogo)            # Label created on right frame for  keele logo iamge
         self.labelLogo.place(x=1000, y= 20)

@@ -1,21 +1,17 @@
 from tkinter import *
 from tkinter import ttk
-from prof import *
-from gui import *
+from Keele_Library_app_Text_Based import *
+from Keele_Library_app_GUI import *
 
 class Classmark:
     def __init__(self,centerFrame):         # Method sets the properties of the classmark logo selection in center frame
+        
         # Creating location image logo on center frame
-        # self.classmark=Frame(cf)
-        # self.classmark.place(x=568, y= 100)
-        # Creating Classmark logo
-        # self.img2=PhotoImage(file='classmark_logo4.png')
-        # self.imgClassmark=Label(self.classmark,image=self.img2,padx=10,pady=10)
-        # self.imgClassmark.pack()
-        self.img=PhotoImage(file='classmark_logo4.png')
+        self.img=PhotoImage(file='classmark_logo.png')         # Loading classmark logo
         self.imgSubject=Label(centerFrame,image=self.img)
         self.imgSubject.place(x=728, y= 100)
-        # Button for seleciton location option
+
+        # Button for seleciton classmark option
         self.buttonClassmark = Button(centerFrame, command=self.openclassmarkwindow, text='Classmark', bg='#281F3E',fg='white',font=('Helvetica', 12, 'bold'),padx=10,pady=10,)
         self.buttonClassmark.place(x=748, y= 260)
 
@@ -23,7 +19,7 @@ class Classmark:
 
         self.master = Toplevel()            # Opens new classmark window
         self.master.title('Keele Library Map - Classmark')
-        self.master.iconbitmap('Keele-logo2.ico')       # Change the window icon to Keele University logo
+        self.master.iconbitmap('Keele-logo_Icon.ico')       # Change the window icon to Keele University logo
         self.width=self.master.winfo_screenwidth()      # Gets the width of window screen
         self.height=self.master.winfo_screenheight()    # Gets the height of window screen
         self.master.geometry(f"{self.width}x{self.height}+0+0")         # Set width and heigh geometry of window
@@ -38,13 +34,13 @@ class Classmark:
         self.frameRight.pack(fill=BOTH)
         
         # Setting backgorund image for right frame of classmark window
-        self.imageBackground = PhotoImage(file='Library.png')
+        self.imageBackground = PhotoImage(file='Window2Background.png')
 
         self.labelBackground = Label(self.frameRight, image=self.imageBackground)            # Label created on right frame for background image
         self.labelBackground.pack(fill=BOTH)
         
         # Adding Keele university logo at top right of right frame
-        self.imageLogo = PhotoImage(file='Keele logo.png')
+        self.imageLogo = PhotoImage(file='Keele-logo_Frame.png')            # Loading keele logo
 
         self.labelLogo = Label(self.frameRight, image=self.imageLogo)            # Label created on right frame for  keele logo image
         self.labelLogo.place(x=1000, y= 20)
